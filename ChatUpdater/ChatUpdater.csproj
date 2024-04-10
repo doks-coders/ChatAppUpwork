@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<InvariantGlobalization>false</InvariantGlobalization>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Riok.Mapperly" Version="3.4.0" />
+		<PackageReference Include="Serilog" Version="4.0.0-dev-02122" />
+		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2-dev-00336" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="5.1.0-dev-00943" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00972" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ChatUpdater.ApplicationCore\ChatUpdater.ApplicationCore.csproj" />
+		<ProjectReference Include="..\ChatUpdater.Infrastructure\ChatUpdater.Infrastructure.csproj" />
+		<ProjectReference Include="..\ChatUpdater.Models\ChatUpdater.Models.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
+
+</Project>

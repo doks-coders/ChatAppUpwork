@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+		<PackageReference Include="JWT" Version="10.1.1" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.0" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
+		<PackageReference Include="Riok.Mapperly" Version="3.4.0" />
+		<PackageReference Include="Serilog" Version="3.1.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\ChatUpdater.Infrastructure\ChatUpdater.Infrastructure.csproj" />
+	  <ProjectReference Include="..\ChatUpdater.Models\ChatUpdater.Models.csproj" />
+	</ItemGroup>
+
+</Project>
