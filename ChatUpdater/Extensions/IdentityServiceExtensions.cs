@@ -17,7 +17,8 @@ namespace ChatUpdater.Extensions
                 e.Password.RequiredLength = 6;
             }).AddRoles<AppRole>()
             .AddRoleManager<RoleManager<AppRole>>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultTokenProviders();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>

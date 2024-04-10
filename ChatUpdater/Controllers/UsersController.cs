@@ -37,7 +37,7 @@ namespace ChatUpdater.Controllers
         
 
         [HttpPost("upload-image")]
-        public async Task<ApiResponseModal<string>> UploadImage(IFormFile file, string formerFile)
+        public async Task<ApiResponseModal<UploadImageResponse>> UploadImage(IFormFile file, string formerFile)
         => await _userService.UpsertProfileImage(file, formerFile, User.GetUserId());
 
         [HttpGet("get-user-information")]

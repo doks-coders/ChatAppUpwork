@@ -25,6 +25,8 @@ namespace ChatUpdater.Models
             { NotImplemented, "Method not implemented" },
             { ArgumentNull, "The argument passed was null." },
             { NullValue, "The value is null" },
+            { MaximumUsersLimit, "The maximum user limit, '10' has been reached " },
+
 
             #endregion
 
@@ -83,6 +85,7 @@ namespace ChatUpdater.Models
         public const string IdentityError = "01AU008";
         public const string EmailNull = "01AU009";
         public const string InvalidPassword = "01AU010";
+        public const string MaximumUsersLimit = "01AU011";
         #endregion
 
         #region 02 Database

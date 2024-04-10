@@ -22,12 +22,18 @@ namespace ChatUpdater.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ApiResponseModal<AuthUserResponse>> Register([FromBody] RegisterUserRequest registerUser)
+        public async Task<ApiResponseModal<bool>> Register([FromBody] RegisterUserRequest registerUser)
         => await _authService.Register(registerUser);
+
 
         [HttpPost("login")]
         public async Task<ApiResponseModal<AuthUserResponse>> LoginUser([FromBody] LoginUserRequest loginUser)
         => await _authService.Login(loginUser);
+
+
+        [HttpPost("set-password")]
+        public async Task<ApiResponseModal<AuthUserResponse>> SetPassword([FromBody] SetPasswordRequest setPassword)
+        => await _authService.SetUserPassword(setPassword);
 
     }
 }

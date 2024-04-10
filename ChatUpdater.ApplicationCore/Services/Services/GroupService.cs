@@ -1,15 +1,11 @@
 ﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
+using ChatUpdater.Infrastructure.Validators.Group;
 using ChatUpdater.Models;
 using ChatUpdater.Models.Entities;
 using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatUpdater.ApplicationCore.Services.Services
 {
@@ -31,6 +27,10 @@ namespace ChatUpdater.ApplicationCore.Services.Services
         /// <returns></returns>
         public async Task<ApiResponseModal<bool>> CreateGroup(CreateGroupChatRequest createGroupChat, Guid adminId)
         {
+            var createGroupChatValidator = new CreateGroupValidator();
+            var validation = await createGroupChatValidator.ValidateAsync(createGroupChat);
+            if (!validation.IsValid) throw new ApiErrorException(validation.Errors);
+
             var group = _mapper.GroupChatRequestToGroupChar(createGroupChat);
             group.AdminId = adminId;
             await _unitOfWork.GroupChats.Add(group);

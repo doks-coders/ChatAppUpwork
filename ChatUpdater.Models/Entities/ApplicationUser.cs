@@ -10,7 +10,9 @@ namespace ChatUpdater.Models.Entities
     {
         public ICollection<AppUserRole> AppUserRoles { get; set; }
 
+        public bool PasswordLock { get; set; } = false;
         public string ProfilePicture { get; set; } = "";
+        public string RelativeProfilePicture { get; set; } = "";
         public List<GroupChat> MyGroups { get; set; } = new();
         public List<GCContacts> GroupContacts { get; set; }
     }

@@ -109,9 +109,6 @@ namespace ChatUpdater.SignalR
 
 
             var group = await _unitOfWork.Groups.Get(u => u.Name == GroupName);
-
-
-          
             await Clients.Group(GroupName).SendAsync("NewMessage", response);
 
             await _messageService.SendMessage(messageRequest, Context.User.GetUserId());
@@ -178,10 +175,10 @@ namespace ChatUpdater.SignalR
 
             if (o < 0)
             {
-                return $"{RecieverName}-{UserName}";
+                return $"{RecieverName}-{UserName}".Replace(" ", "");
             }
 
-            return $"{UserName}-{RecieverName}";
+            return $"{UserName}-{RecieverName}".Replace(" ", "");
         }
 
         public override string? ToString()

@@ -36,12 +36,13 @@ namespace ChatUpdater.ApplicationCore.Services.Services
         /// <returns></returns>
         public async Task<ApiResponseModal<List<UserResponse>>> GetAllUsers(Guid userId)
         {
-             var users =   await _userManager.Users.Where(e => e.Email != null && e.Id != userId).Select(e =>
-             new UserResponse(e.Email,
-             e.Id,
-             e.ProfilePicture,
-             e.UserName
-             )).ToListAsync();
+            var users = await _userManager.Users.Where(e => e.Email != null && e.Id != userId).Select(e =>
+            new UserResponse(e.Email,
+            e.Id,
+            e.ProfilePicture,
+            e.RelativeProfilePicture,
+            e.UserName
+            )).ToListAsync();
 
             return await ApiResponseModal<List<UserResponse>>.SuccessAsync(users);
         }
@@ -84,8 +85,15 @@ namespace ChatUpdater.ApplicationCore.Services.Services
         }
 
 
-
-        public async Task<ApiResponseModal<string>> UpsertProfileImage(IFormFile file, string formerFile,Guid userId)
+        /// <summary>
+        /// Uploads and updates the image for user profiles
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="formerFile"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        /// <exception cref="ApiErrorException"></exception>
+        public async Task<ApiResponseModal<UploadImageResponse>> UpsertProfileImage(IFormFile file, string formerFile, Guid userId)
         {
             if (file == null || file.Length == 0)
             {
@@ -95,10 +103,15 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             var photoUrl = await UploadImage(file, formerFile);
 
             var user = await _unitOfWork.Users.Get(u => u.Id == userId);
+
             user.ProfilePicture = photoUrl;
-            if(await _unitOfWork.Save())
+            user.RelativeProfilePicture = GetRelativePhotoAssetsPath(photoUrl);
+
+            var relativeUrl = GetRelativePhotoAssetsPath(photoUrl);
+
+            if (await _unitOfWork.Save())
             {
-                return await ApiResponseModal<string>.SuccessAsync(photoUrl);
+                return await ApiResponseModal<UploadImageResponse>.SuccessAsync(new UploadImageResponse(relativeUrl,photoUrl));
             }
             throw new ApiErrorException(BaseErrorCodes.DatabaseUnknownError);
         }
@@ -109,14 +122,26 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
             var userResponse = _mapper.ApplicationUserToUserResponse(foundUsers);
 
-            return await ApiResponseModal< List < UserResponse >>.SuccessAsync(userResponse);
+            return await ApiResponseModal<List<UserResponse>>.SuccessAsync(userResponse);
         }
 
         public async Task<ApiResponseModal<UserResponse>> GetUserInformation(Guid userId)
         {
             var user = await _userManager.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
             var userResponse = _mapper.ApplicationUserToUserResponse(user);
+         
             return await ApiResponseModal<UserResponse>.SuccessAsync(userResponse);
+        }
+
+        /// <summary>
+        /// In Angular, images are in the assets folder, so we are simply going to make a relative path there
+        /// </summary>
+        /// <param name="photoUrl"></param>
+        /// <returns></returns>
+        private string GetRelativePhotoAssetsPath(string photoUrl)
+        {
+            var photoArray = photoUrl.Split("/assets/");
+            return $"assets/{photoArray[1]}";
         }
     }
 }

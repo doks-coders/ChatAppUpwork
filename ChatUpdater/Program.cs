@@ -1,6 +1,8 @@
 using ChatUpdater.Extensions;
 using ChatUpdater.Middlewares;
+using ChatUpdater.Models.Entities;
 using ChatUpdater.SignalR;
+using Microsoft.AspNetCore.Identity;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +28,7 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowCredentials());
 });
+builder.Services.AddHttpContextAccessor();
 
 
 builder.Host.UseSerilog(Log.Logger);
@@ -48,6 +51,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors(u => u.AllowAnyHeader().AllowAnyMethod()
 .AllowCredentials()
 .WithOrigins("https://localhost:4200"));
@@ -56,5 +62,6 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 app.MapControllers();
 
 app.MapHub<MessageHub>("hubs/messages");
-
+app.MapFallbackToController("Index", "Fallback");
+await app.Migrate();
 app.Run();

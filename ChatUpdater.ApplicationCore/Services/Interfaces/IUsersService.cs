@@ -9,7 +9,7 @@ namespace ChatUpdater.ApplicationCore.Services.Interfaces
         Task<ApiResponseModal<List<UserResponse>>> GetAllUsers(Guid userId);
         Task<string> UploadImage(IFormFile file, string formerFile);
         Task<ApiResponseModal<List<UserResponse>>> SearchUsers(string predicate);
-        Task<ApiResponseModal<string>> UpsertProfileImage(IFormFile file, string formerFile, Guid userId);
+        Task<ApiResponseModal<UploadImageResponse>> UpsertProfileImage(IFormFile file, string formerFile, Guid userId);
 
         Task<ApiResponseModal<UserResponse>> GetUserInformation(Guid userId);
     }

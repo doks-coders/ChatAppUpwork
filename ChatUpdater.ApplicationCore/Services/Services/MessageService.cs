@@ -1,6 +1,7 @@
 ﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
+using ChatUpdater.Infrastructure.Validators.Message;
 using ChatUpdater.Models;
 using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
@@ -74,6 +75,10 @@ namespace ChatUpdater.ApplicationCore.Services.Services
         /// <returns></returns>
         public async Task<ApiResponseModal<bool>> SendMessage(MessageRequest messageRequest, Guid userId)
         {
+            var messageRequestValidator = new MessageRequestValidator();
+            var validation = await messageRequestValidator.ValidateAsync(messageRequest);
+            if (!validation.IsValid) throw new ApiErrorException(validation.Errors);
+
             if (messageRequest.RecieverId == userId) throw new ApiErrorException(BaseErrorCodes.IdentityError);
             var message = _mapper.MessageRequestToMessage(messageRequest);
             message.SenderId = userId;

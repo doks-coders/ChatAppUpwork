@@ -4,6 +4,7 @@ using ChatUpdater.ApplicationCore.Services.Services;
 using ChatUpdater.Infrastructure.Data;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
 using ChatUpdater.Infrastructure.Repository.Repositories;
+using ChatUpdater.ApplicationCore.Helpers;
 
 namespace ChatUpdater.Extensions
 {
@@ -19,6 +20,7 @@ namespace ChatUpdater.Extensions
             services.AddScoped<IGroupService, GroupService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IDemoService, DemoService>();
+            services.AddScoped<IEmailSender, EmailSender>();
             return services;
         }
     }
