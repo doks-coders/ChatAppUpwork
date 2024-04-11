@@ -126,12 +126,11 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
         public async Task<bool> ConfirmEmail(string userId, string token)
         {
-            // Decode userId if necessary
+           
             var decodedUserId = Guid.Parse(userId);
 
             var user = await _unitOfWork.Users.Get(u => u.Id == decodedUserId);
 
-            // Confirm the user's email
             var result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded)
             {
@@ -148,9 +147,16 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
         public async Task<ApiResponseModal<AuthUserResponse>> SetUserPassword(SetPasswordRequest passwordRequest)
         {
+            var setPasswordRequestValidator = new SetPasswordRequestValidator();
+            var validation = await setPasswordRequestValidator.ValidateAsync(passwordRequest);
+            if (!validation.IsValid) throw new ApiErrorException(validation.Errors);
+
             var user = await _unitOfWork.Users.Get(u => u.Id == passwordRequest.UserId);
+
             if (user == null) throw new ApiErrorException(BaseErrorCodes.UserNotFound);
+
             if (passwordRequest.Password != passwordRequest.ConfirmPassword) throw new ApiErrorException(BaseErrorCodes.InvalidPassword);
+            
             if (user.EmailConfirmed == true && user.PasswordLock == false)
             {
                 await _userManager.AddPasswordAsync(user, passwordRequest.Password);

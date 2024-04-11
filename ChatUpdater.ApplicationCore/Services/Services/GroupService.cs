@@ -120,7 +120,7 @@ namespace ChatUpdater.ApplicationCore.Services.Services
         /// <returns></returns>
         public async Task<ApiResponseModal<List<GroupChatResponse>>> SearchGroup(string predicate)
         {
-            var foundGroups = await _unitOfWork.GroupChats.GetAll(u => u.Name.Contains(predicate));
+            var foundGroups = await _unitOfWork.GroupChats.GetAll(u => u.Name.ToLower().Contains(predicate.ToLower()));
 
             var groupChatResponses = _mapper.GroupChatToGroupChatResponse(foundGroups.ToList());
 

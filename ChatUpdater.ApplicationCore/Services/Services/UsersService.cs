@@ -118,7 +118,7 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
         public async Task<ApiResponseModal<List<UserResponse>>> SearchUsers(string predicate)
         {
-            var foundUsers = await _userManager.Users.Where(u => u.UserName.Contains(predicate) || u.Email.Contains(predicate)).ToListAsync();
+            var foundUsers = await _userManager.Users.Where(u => u.UserName.ToLower().Contains(predicate.ToLower()) || u.Email.ToLower().Contains(predicate.ToLower())).ToListAsync();
 
             var userResponse = _mapper.ApplicationUserToUserResponse(foundUsers);
 

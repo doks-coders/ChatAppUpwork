@@ -49,7 +49,7 @@ namespace ChatUpdater.SignalR
             else
             {
                 var recieverUser = await _userManager.Users.FirstOrDefaultAsync(e => e.Id == Guid.Parse(RecieverId));
-                RecieverName = recieverUser.UserName;
+                RecieverName = recieverUser.Email;
             }
 
             GroupName = GetGroupName(Context.User.GetUserName(), RecieverName, isGroup);
@@ -98,7 +98,7 @@ namespace ChatUpdater.SignalR
             else
             {
                 var recieverUser = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == messageRequest.RecieverId); await _userManager.Users.FirstOrDefaultAsync(u => u.Id == messageRequest.RecieverId);
-                RecieverName = recieverUser.UserName;
+                RecieverName = recieverUser.Email;
             }
 
             var response = _mapper.MessageRequestToRespone(messageRequest);
@@ -169,16 +169,21 @@ namespace ChatUpdater.SignalR
         /// <returns></returns>
         private string GetGroupName(string UserName, string RecieverName, string isGroup)
         {
-            if (isGroup == "true") return $"{RecieverName.Replace(" ", "")}";
+            if (isGroup == "true") return $"{RemoveStrangeCharacters(RecieverName)}";
 
             int o = string.CompareOrdinal(UserName, RecieverName);
 
             if (o < 0)
             {
-                return $"{RecieverName}-{UserName}".Replace(" ", "");
+                return RemoveStrangeCharacters($"{RecieverName}-{UserName}");
             }
 
-            return $"{UserName}-{RecieverName}".Replace(" ", "");
+            return RemoveStrangeCharacters($"{UserName}-{RecieverName}");
+        }
+
+        private string RemoveStrangeCharacters(string str)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(str, @"[^a-zA-Z0-9]", "");
         }
 
         public override string? ToString()
