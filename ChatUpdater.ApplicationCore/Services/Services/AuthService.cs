@@ -74,7 +74,6 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
             if (user == null) throw new ApiErrorException(BaseErrorCodes.UserNotFound);
 
-            await SendSetPasswordEmail(user);
 
             var matches = await _userManager.CheckPasswordAsync(user, loginUser.Password);
 
@@ -118,8 +117,14 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
 
 ";
-
-            await _emailSender.SendEmailAsync(applicationUser.Email, htmlMessage, subject);
+            try
+            {
+                await _emailSender.SendEmailAsync(applicationUser.Email, htmlMessage, subject);
+            }catch(Exception ex)
+            {
+                Log.Error(ex.Message);
+            }
+            
         }
 
 
