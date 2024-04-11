@@ -41,6 +41,7 @@ namespace ChatUpdater.Models
             { RoleExists, "The Role already exists in the database." },
             { IdentityError, "Something went wrong. While processing the request." },
             { InvalidPassword,"This Password is not correct" },
+            { UserNameExists,  "Pick a different username" },
 
             #endregion
 
@@ -59,6 +60,7 @@ namespace ChatUpdater.Models
 
             { FileNotFound, "Requested file was not found in the file system." },
             { FileNotPlayable, "Requested file could not be played at the moment." },
+            
 
         };
 
@@ -86,6 +88,7 @@ namespace ChatUpdater.Models
         public const string EmailNull = "01AU009";
         public const string InvalidPassword = "01AU010";
         public const string MaximumUsersLimit = "01AU011";
+        public const string UserNameExists = "01AU012";
         #endregion
 
         #region 02 Database
@@ -104,6 +107,7 @@ namespace ChatUpdater.Models
 
         public const string FileNotFound = "03DRV001";
         public const string FileNotPlayable = "03DRV002";
+        
     }
 }
 

@@ -14,6 +14,7 @@ using System.Net.Mail;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using Microsoft.AspNetCore.Identity.Data;
 
 
 
@@ -52,17 +53,31 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             if (!validation.IsValid) throw new ApiErrorException(validation.Errors);
 
             var user = new ApplicationUser { UserName = registerUser.UserName, Email = registerUser.Email, PhoneNumber = registerUser.PhoneNumber };
-            if (await _userManager.FindByEmailAsync(registerUser.Email) != null) throw new ApiErrorException(BaseErrorCodes.EmailTaken);
+            
+            if( await _userManager.FindByEmailAsync(registerUser.Email) != null)
+            {
+                throw new ApiErrorException(BaseErrorCodes.EmailTaken);
+            }
+                 
 
+        
             var res = await _userManager.CreateAsync(user);
             user.EmailConfirmed = false;
+
+            
             if (res.Succeeded)
             {
                 await SendSetPasswordEmail(user);
 
                 return await ApiResponseModal<bool>.SuccessAsync(true);
             }
-            throw new ApiErrorException(BaseErrorCodes.ValidationError);
+
+            if(res.Errors.FirstOrDefault(i => i.Code == "DuplicateUserName") != null)
+            {
+                throw new ApiErrorException(BaseErrorCodes.UserNameExists);
+            }
+              
+            throw new ApiErrorException(BaseErrorCodes.IdentityError);
         }
 
         public async Task<ApiResponseModal<AuthUserResponse>> Login(LoginUserRequest loginUser)
@@ -73,7 +88,6 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
             var user = await _userManager.FindByEmailAsync(loginUser.Email);
             if (user == null) throw new ApiErrorException(BaseErrorCodes.UserNotFound);
-
 
             var matches = await _userManager.CheckPasswordAsync(user, loginUser.Password);
 
@@ -120,18 +134,19 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             try
             {
                 await _emailSender.SendEmailAsync(applicationUser.Email, htmlMessage, subject);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 Log.Error(ex.Message);
             }
-            
+
         }
 
 
 
         public async Task<bool> ConfirmEmail(string userId, string token)
         {
-           
+
             var decodedUserId = Guid.Parse(userId);
 
             var user = await _unitOfWork.Users.Get(u => u.Id == decodedUserId);
@@ -161,12 +176,15 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             if (user == null) throw new ApiErrorException(BaseErrorCodes.UserNotFound);
 
             if (passwordRequest.Password != passwordRequest.ConfirmPassword) throw new ApiErrorException(BaseErrorCodes.InvalidPassword);
-            
+
             if (user.EmailConfirmed == true && user.PasswordLock == false)
             {
-                await _userManager.AddPasswordAsync(user, passwordRequest.Password);
+                var res = await _userManager.AddPasswordAsync(user, passwordRequest.Password);
+                if (!res.Succeeded) throw new ApiErrorException(BaseErrorCodes.InvalidPassword);
+
                 user.PasswordLock = true;
                 await _unitOfWork.Save();
+
 
                 return await ApiResponseModal<AuthUserResponse>.SuccessAsync(new AuthUserResponse(
                     Token: await _tokenService.CreateToken(user)
