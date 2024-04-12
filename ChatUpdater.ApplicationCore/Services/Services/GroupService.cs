@@ -138,7 +138,7 @@ namespace ChatUpdater.ApplicationCore.Services.Services
                 return await ApiResponseModal<List<GroupChatResponse>>.SuccessAsync(res);
             }
 
-            return await ApiResponseModal<List<GroupChatResponse>>.SuccessAsync(new List<GroupChatResponse>() { });  
+            return await ApiResponseModal<List<GroupChatResponse>>.SuccessAsync(new List<GroupChatResponse>() { });
         }
     }
 }

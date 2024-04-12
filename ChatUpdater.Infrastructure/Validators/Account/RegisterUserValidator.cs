@@ -1,10 +1,5 @@
-﻿using FluentValidation;
-using ChatUpdater.Models.Requests;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ChatUpdater.Models.Requests;
+using FluentValidation;
 
 namespace ChatUpdater.Infrastructure.Validators.Account
 {

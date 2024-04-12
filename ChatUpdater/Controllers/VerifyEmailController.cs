@@ -8,7 +8,7 @@ namespace ChatUpdater.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public VerifyEmailController(IAuthService authService, IHttpContextAccessor httpContextAccessor) 
+        public VerifyEmailController(IAuthService authService, IHttpContextAccessor httpContextAccessor)
         {
             _authService = authService;
             _httpContextAccessor = httpContextAccessor;
@@ -16,7 +16,7 @@ namespace ChatUpdater.Controllers
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] string userid, string token)
         {
-           if(await _authService.ConfirmEmail(userid, token))
+            if (await _authService.ConfirmEmail(userid, token))
             {
                 return Redirect($"{GetUrl()}/set-password/{userid}");
             }

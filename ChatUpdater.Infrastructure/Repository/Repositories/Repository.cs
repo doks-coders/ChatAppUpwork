@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ChatUpdater.Infrastructure.Data;
+﻿using ChatUpdater.Infrastructure.Data;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace ChatUpdater.Infrastructure.Repository.Repositories

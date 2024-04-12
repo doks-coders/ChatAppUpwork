@@ -1,14 +1,7 @@
-﻿using Azure;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Models;
-using ChatUpdater.Models.Entities;
 using ChatUpdater.Models.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatUpdater.ApplicationCore.Services.Services
 {
@@ -26,7 +19,7 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
         public async Task<ApiResponseModal<List<DemoResponse>>> GetDemoList()
         {
-            var response = new List<DemoResponse>() { new DemoResponse() { Text="New" } };
+            var response = new List<DemoResponse>() { new DemoResponse() { Text = "New" } };
             return await ApiResponseModal<List<DemoResponse>>.SuccessAsync(response);
         }
 
@@ -43,6 +36,6 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             throw new ApiErrorException(BaseErrorCodes.IncorrectCredentials);
         }
 
-        
+
     }
 }

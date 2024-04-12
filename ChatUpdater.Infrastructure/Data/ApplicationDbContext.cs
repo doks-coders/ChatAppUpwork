@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChatUpdater.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ChatUpdater.Models.Entities;
 using System.Reflection;
 
 namespace ChatUpdater.Infrastructure.Data

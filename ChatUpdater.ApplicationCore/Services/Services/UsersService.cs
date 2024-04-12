@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using ChatUpdater.ApplicationCore.Helpers;
+using ChatUpdater.ApplicationCore.Services.Interfaces;
+using ChatUpdater.Infrastructure.Repository.Interfaces;
+using ChatUpdater.Infrastructure.Validators.User;
+using ChatUpdater.Models;
+using ChatUpdater.Models.Entities;
+using ChatUpdater.Models.Requests;
+using ChatUpdater.Models.Response;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using ChatUpdater.ApplicationCore.Helpers;
-using ChatUpdater.ApplicationCore.Services.Interfaces;
-using ChatUpdater.Infrastructure.Repository.Interfaces;
-using ChatUpdater.Models.Entities;
-using ChatUpdater.Models.Response;
-using System.Collections.Generic;
-using ChatUpdater.Models;
 
 namespace ChatUpdater.ApplicationCore.Services.Services
 {
@@ -41,7 +41,8 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             e.Id,
             e.ProfilePicture,
             e.RelativeProfilePicture,
-            e.UserName
+            e.UserName,
+            e.PhoneNumber
             )).ToListAsync();
 
             return await ApiResponseModal<List<UserResponse>>.SuccessAsync(users);
@@ -111,7 +112,7 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
             if (await _unitOfWork.Save())
             {
-                return await ApiResponseModal<UploadImageResponse>.SuccessAsync(new UploadImageResponse(relativeUrl,photoUrl));
+                return await ApiResponseModal<UploadImageResponse>.SuccessAsync(new UploadImageResponse(relativeUrl, photoUrl));
             }
             throw new ApiErrorException(BaseErrorCodes.DatabaseUnknownError);
         }
@@ -129,8 +130,31 @@ namespace ChatUpdater.ApplicationCore.Services.Services
         {
             var user = await _userManager.Users.Where(u => u.Id == userId).FirstOrDefaultAsync();
             var userResponse = _mapper.ApplicationUserToUserResponse(user);
-         
+
             return await ApiResponseModal<UserResponse>.SuccessAsync(userResponse);
+        }
+
+
+
+        public async Task<ApiResponseModal<bool>> UpdateUserInformation(UpdateUserInformationRequest updateRequest, Guid userId)
+        {
+            var updateUserRequestValidator = new UpdateUserRequestValidation();
+            var validation = await updateUserRequestValidator.ValidateAsync(updateRequest);
+
+            if (!validation.IsValid) throw new ApiErrorException(validation.Errors);
+
+            if (await _unitOfWork.Users.Get(u => u.UserName == updateRequest.UserName) != null) throw new ApiErrorException(BaseErrorCodes.UserNameExists);
+
+            var user = await _unitOfWork.Users.Get(u => u.Id == userId) ??
+                throw new ApiErrorException(BaseErrorCodes.RecordNotFound);
+
+            user.UserName = updateRequest.UserName;
+            user.PhoneNumber = updateRequest.PhoneNumber;
+            if (await _unitOfWork.Save())
+            {
+                return await ApiResponseModal<bool>.SuccessAsync(true);
+            }
+            throw new ApiErrorException(BaseErrorCodes.DatabaseUnknownError);
         }
 
         /// <summary>
@@ -143,5 +167,7 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             var photoArray = photoUrl.Split("/assets/");
             return $"assets/{photoArray[1]}";
         }
+
+
     }
 }

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
+using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
+using Microsoft.AspNetCore.Http;
 
 namespace ChatUpdater.ApplicationCore.Services.Interfaces
 {
@@ -12,5 +13,6 @@ namespace ChatUpdater.ApplicationCore.Services.Interfaces
         Task<ApiResponseModal<UploadImageResponse>> UpsertProfileImage(IFormFile file, string formerFile, Guid userId);
 
         Task<ApiResponseModal<UserResponse>> GetUserInformation(Guid userId);
+        Task<ApiResponseModal<bool>> UpdateUserInformation(UpdateUserInformationRequest updateRequest, Guid userId);
     }
 }

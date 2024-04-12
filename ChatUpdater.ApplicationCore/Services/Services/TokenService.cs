@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using ChatUpdater.ApplicationCore.Services.Interfaces;
+using ChatUpdater.Models.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using ChatUpdater.ApplicationCore.Services.Interfaces;
-using ChatUpdater.Models.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

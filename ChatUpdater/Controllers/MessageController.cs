@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Extensions;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
 using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatUpdater.Controllers
 {
@@ -27,14 +27,14 @@ namespace ChatUpdater.Controllers
 
         [HttpPost("Send-Message")]
         public async Task<ApiResponseModal<bool>> SendMessage([FromBody] MessageRequest messageRequest)
-        =>await _messageService.SendMessage(messageRequest, User.GetUserId());
-            
-        
+        => await _messageService.SendMessage(messageRequest, User.GetUserId());
+
+
 
 
         [HttpGet("get-chatmessages/")]
         public async Task<ApiResponseModal<List<MessageResponse>>> GetMessage([FromQuery] Guid recieverId, bool isGroup)
-        => await _messageService.GetChatMessages(recieverId,User.GetUserId(), isGroup);
+        => await _messageService.GetChatMessages(recieverId, User.GetUserId(), isGroup);
 
 
 

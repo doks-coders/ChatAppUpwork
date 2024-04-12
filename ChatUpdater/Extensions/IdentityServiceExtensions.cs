@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using ChatUpdater.Infrastructure.Data;
+using ChatUpdater.Models.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using ChatUpdater.Infrastructure.Data;
-using ChatUpdater.Models.Entities;
 using System.Text;
 
 namespace ChatUpdater.Extensions

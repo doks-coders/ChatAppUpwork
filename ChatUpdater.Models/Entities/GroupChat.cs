@@ -1,5 +1,4 @@
-﻿using ChatUpdater.Models.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ChatUpdater.Models.Entities
 {

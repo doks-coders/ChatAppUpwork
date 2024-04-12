@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Models.Entities;
 using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatUpdater.Controllers
 {

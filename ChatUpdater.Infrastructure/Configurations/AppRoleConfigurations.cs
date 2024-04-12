@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ChatUpdater.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ChatUpdater.Models.Entities;
 
 namespace ChatUpdater.Infrastructure.Configurations
 {

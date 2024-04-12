@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Models.Response;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatUpdater.Controllers
 {
@@ -15,7 +15,7 @@ namespace ChatUpdater.Controllers
 
         [HttpGet("get-info")]
         public async Task<ApiResponseModal<DemoResponse>> GetInfo()
-            =>  await _demoService.GetDemoResponse();
+            => await _demoService.GetDemoResponse();
 
         [HttpGet("get-info-list")]
         public async Task<ApiResponseModal<List<DemoResponse>>> GetList()

@@ -1,8 +1,6 @@
 using ChatUpdater.Extensions;
 using ChatUpdater.Middlewares;
-using ChatUpdater.Models.Entities;
 using ChatUpdater.SignalR;
-using Microsoft.AspNetCore.Identity;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

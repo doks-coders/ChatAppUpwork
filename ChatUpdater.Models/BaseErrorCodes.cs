@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-// ReSharper disable InconsistentNaming
+﻿// ReSharper disable InconsistentNaming
 #pragma warning disable CS1591
 
 namespace ChatUpdater.Models
@@ -60,7 +53,7 @@ namespace ChatUpdater.Models
 
             { FileNotFound, "Requested file was not found in the file system." },
             { FileNotPlayable, "Requested file could not be played at the moment." },
-            
+
 
         };
 
@@ -107,7 +100,7 @@ namespace ChatUpdater.Models
 
         public const string FileNotFound = "03DRV001";
         public const string FileNotPlayable = "03DRV002";
-        
+
     }
 }
 

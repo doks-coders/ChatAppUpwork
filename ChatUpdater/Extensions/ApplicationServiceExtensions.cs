@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.ApplicationCore.Services.Services;
 using ChatUpdater.Infrastructure.Data;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
 using ChatUpdater.Infrastructure.Repository.Repositories;
-using ChatUpdater.ApplicationCore.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChatUpdater.Extensions
 {

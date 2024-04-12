@@ -1,14 +1,9 @@
 ﻿using ChatUpdater.Models;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatUpdater.ApplicationCore.Helpers
 {
-    
+
     public class ApiResponseModal
     {
         public string? ErrorCode { get; internal set; }

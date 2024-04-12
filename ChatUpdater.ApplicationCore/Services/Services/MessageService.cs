@@ -83,15 +83,15 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             var message = _mapper.MessageRequestToMessage(messageRequest);
             message.SenderId = userId;
             await _unitOfWork.Messages.Add(message);
-            if(await _unitOfWork.Save())
+            if (await _unitOfWork.Save())
             {
                 return await ApiResponseModal<bool>.SuccessAsync(true);
-            } 
+            }
             throw new ApiErrorException(BaseErrorCodes.DatabaseUnknownError);
 
         }
 
-        public async Task<ApiResponseModal<List<MessageResponse>>> GetChatMessages(Guid recieverId,Guid userId, bool isGroup)
+        public async Task<ApiResponseModal<List<MessageResponse>>> GetChatMessages(Guid recieverId, Guid userId, bool isGroup)
         {
             List<MessageResponse> messages = new();
 
@@ -105,7 +105,7 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             }
 
             return await ApiResponseModal<List<MessageResponse>>.SuccessAsync(messages);
-            
+
         }
     }
 }

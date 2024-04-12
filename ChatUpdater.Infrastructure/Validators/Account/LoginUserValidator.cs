@@ -1,14 +1,9 @@
 ﻿using ChatUpdater.Models.Requests;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatUpdater.Infrastructure.Validators.Account
 {
-    public class LoginUserValidator:AbstractValidator<LoginUserRequest>
+    public class LoginUserValidator : AbstractValidator<LoginUserRequest>
     {
         public LoginUserValidator()
         {

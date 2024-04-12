@@ -1,13 +1,8 @@
 ﻿using ChatUpdater.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChatUpdater.ApplicationCore.Helpers
 {
-   
+
     public class ApiErrorException : Exception
     {
         public string ErrorCode { get; set; }

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Extensions;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
 using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatUpdater.Controllers
 {
@@ -37,7 +37,7 @@ namespace ChatUpdater.Controllers
 
         [HttpGet("join-group/{groupId}")]
         public async Task<ApiResponseModal<bool>> JoinGroup(Guid groupId)
-        =>await _groupService.JoinGroup(User.GetUserId(), groupId);
+        => await _groupService.JoinGroup(User.GetUserId(), groupId);
 
 
         [HttpGet("get-joined-groups")]
@@ -48,12 +48,12 @@ namespace ChatUpdater.Controllers
         public async Task<ApiResponseModal<List<UserResponse>>> GetGroupMembers(Guid groupId)
         => await _groupService.GetGroupMembers(groupId);
 
-        
+
 
         [HttpGet("search-groups")]
         public async Task<ApiResponseModal<List<GroupChatResponse>>> SearchGroup([FromQuery] string search)
-        =>await _groupService.SearchGroup(search);
-        
+        => await _groupService.SearchGroup(search);
+
 
 
 

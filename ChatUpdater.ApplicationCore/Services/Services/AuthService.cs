@@ -1,20 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Infrastructure.Repository.Interfaces;
+using ChatUpdater.Infrastructure.Validators.Account;
+using ChatUpdater.Models;
 using ChatUpdater.Models.Entities;
 using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
-using ChatUpdater.Models;
-using ChatUpdater.Infrastructure.Validators.Account;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.WebUtilities;
-using Serilog;
-using System.Net.Mail;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Text;
-using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 
 
@@ -53,18 +49,18 @@ namespace ChatUpdater.ApplicationCore.Services.Services
             if (!validation.IsValid) throw new ApiErrorException(validation.Errors);
 
             var user = new ApplicationUser { UserName = registerUser.UserName, Email = registerUser.Email, PhoneNumber = registerUser.PhoneNumber };
-            
-            if( await _userManager.FindByEmailAsync(registerUser.Email) != null)
+
+            if (await _userManager.FindByEmailAsync(registerUser.Email) != null)
             {
                 throw new ApiErrorException(BaseErrorCodes.EmailTaken);
             }
-                 
 
-        
+
+
             var res = await _userManager.CreateAsync(user);
             user.EmailConfirmed = false;
 
-            
+
             if (res.Succeeded)
             {
                 await SendSetPasswordEmail(user);
@@ -72,11 +68,11 @@ namespace ChatUpdater.ApplicationCore.Services.Services
                 return await ApiResponseModal<bool>.SuccessAsync(true);
             }
 
-            if(res.Errors.FirstOrDefault(i => i.Code == "DuplicateUserName") != null)
+            if (res.Errors.FirstOrDefault(i => i.Code == "DuplicateUserName") != null)
             {
                 throw new ApiErrorException(BaseErrorCodes.UserNameExists);
             }
-              
+
             throw new ApiErrorException(BaseErrorCodes.IdentityError);
         }
 

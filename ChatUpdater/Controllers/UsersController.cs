@@ -1,29 +1,21 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ChatUpdater.ApplicationCore.Helpers;
+﻿using ChatUpdater.ApplicationCore.Helpers;
 using ChatUpdater.ApplicationCore.Services.Interfaces;
 using ChatUpdater.Extensions;
-using ChatUpdater.Infrastructure.Repository.Interfaces;
-using ChatUpdater.Models.Entities;
+using ChatUpdater.Models.Requests;
 using ChatUpdater.Models.Response;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ChatUpdater.Controllers
 {
     [Authorize]
     public class UsersController : ParentController
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly MessageMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+
         private readonly IUsersService _userService;
 
-        public UsersController(UserManager<ApplicationUser> userManager, IUnitOfWork unitOfWork, IUsersService usersService)
+        public UsersController(IUsersService usersService)
         {
-            _userManager = userManager;
-            _unitOfWork = unitOfWork;
-            _mapper = new MessageMapper();
             _userService = usersService;
         }
         [HttpGet("get-users")]
@@ -34,7 +26,7 @@ namespace ChatUpdater.Controllers
         [HttpGet("get-id")]
         public async Task<ApiResponseModal<Guid>> GetUserId()
         => await ApiResponseModal<Guid>.SuccessAsync(User.GetUserId());
-        
+
 
         [HttpPost("upload-image")]
         public async Task<ApiResponseModal<UploadImageResponse>> UploadImage(IFormFile file, string formerFile)
@@ -47,6 +39,11 @@ namespace ChatUpdater.Controllers
         [HttpGet("search-users")]
         public async Task<ApiResponseModal<List<UserResponse>>> SearchUsers([FromQuery] string search)
         => await _userService.SearchUsers(search);
+
+
+        [HttpPost("update-user-information")]
+        public async Task<ApiResponseModal<bool>> UpdateUserInformation([FromBody] UpdateUserInformationRequest updateUserInformation)
+            => await _userService.UpdateUserInformation(updateUserInformation, User.GetUserId());
 
 
 
