@@ -143,11 +143,18 @@ namespace ChatUpdater.ApplicationCore.Services.Services
 
             if (!validation.IsValid) throw new ApiErrorException(validation.Errors);
 
-            if (await _unitOfWork.Users.Get(u => u.UserName == updateRequest.UserName) != null) throw new ApiErrorException(BaseErrorCodes.UserNameExists);
-
             var user = await _unitOfWork.Users.Get(u => u.Id == userId) ??
                 throw new ApiErrorException(BaseErrorCodes.RecordNotFound);
 
+            if (user.UserName != updateRequest.UserName)
+            {
+                //If incoming username is different, check if the username already exists somewhere else
+                var checkUserName = await _unitOfWork.Users.Get(u => u.UserName == updateRequest.UserName);
+                if (checkUserName != null)
+                {
+                    throw new ApiErrorException(BaseErrorCodes.UserNameExists);
+                }
+            }
             user.UserName = updateRequest.UserName;
             user.PhoneNumber = updateRequest.PhoneNumber;
             if (await _unitOfWork.Save())
